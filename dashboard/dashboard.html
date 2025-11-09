@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Agriculture Dashboard</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js para gráficas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .metric-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .alert-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen p-6">
+    
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h1 class="text-4xl font-bold text-gray-800 flex items-center gap-3">
+                    🌱 Smart Agriculture Dashboard
+                </h1>
+                <p class="text-gray-600 mt-2">Monitoreo en Tiempo Real - Lab 9 CC3086</p>
+                <p class="text-sm text-gray-500 mt-1">Desarrollado por: <strong>Diego</strong> (Persona 2)</p>
+            </div>
+            <div id="systemStatus" class="px-6 py-3 rounded-lg border-2 font-semibold text-lg bg-green-100 text-green-800 border-green-300">
+                Estado: ÓPTIMO
+            </div>
+        </div>
+        
+        <!-- Alertas -->
+        <div id="alertsContainer" class="hidden bg-white rounded-lg shadow-lg p-4 mb-4 border-l-4 border-red-500">
+            <h3 class="font-semibold mb-3 flex items-center gap-2 text-lg">
+                <i data-lucide="alert-triangle" class="text-red-500"></i>
+                <span id="alertsTitle">Alertas Activas</span>
+            </h3>
+            <div id="alertsList" class="space-y-2"></div>
+        </div>
+    </div>
+
+    <!-- Métricas Actuales -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+        <!-- Humedad Suelo -->
+        <div class="metric-card bg-white rounded-lg shadow-lg p-5 border-l-4 border-blue-500">
+            <div class="flex justify-between items-start mb-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="droplets" class="text-blue-500"></i>
+                    <span class="text-sm font-medium text-gray-600">Humedad Suelo</span>
+                </div>
+            </div>
+            <div class="text-3xl font-bold text-blue-500">
+                <span id="humedadSuelo">--</span>
+                <span class="text-base ml-1 text-gray-500">%</span>
+            </div>
+        </div>
+
+        <!-- Temperatura -->
+        <div class="metric-card bg-white rounded-lg shadow-lg p-5 border-l-4 border-red-500">
+            <div class="flex justify-between items-start mb-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="thermometer" class="text-red-500"></i>
+                    <span class="text-sm font-medium text-gray-600">Temperatura</span>
+                </div>
+            </div>
+            <div class="text-3xl font-bold text-red-500">
+                <span id="temperatura">--</span>
+                <span class="text-base ml-1 text-gray-500">°C</span>
+            </div>
+        </div>
+
+        <!-- Luz -->
+        <div class="metric-card bg-white rounded-lg shadow-lg p-5 border-l-4 border-yellow-500">
+            <div class="flex justify-between items-start mb-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="sun" class="text-yellow-500"></i>
+                    <span class="text-sm font-medium text-gray-600">Luz Solar</span>
+                </div>
+            </div>
+            <div class="text-3xl font-bold text-yellow-500">
+                <span id="luz">--</span>
+                <span class="text-base ml-1 text-gray-500">lux</span>
+            </div>
+        </div>
+
+        <!-- Humedad Aire -->
+        <div class="metric-card bg-white rounded-lg shadow-lg p-5 border-l-4 border-cyan-500">
+            <div class="flex justify-between items-start mb-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="wind" class="text-cyan-500"></i>
+                    <span class="text-sm font-medium text-gray-600">Humedad Aire</span>
+                </div>
+            </div>
+            <div class="text-3xl font-bold text-cyan-500">
+                <span id="humedadAire">--</span>
+                <span class="text-base ml-1 text-gray-500">%</span>
+            </div>
+        </div>
+
+        <!-- pH -->
+        <div class="metric-card bg-white rounded-lg shadow-lg p-5 border-l-4 border-purple-500">
+            <div class="flex justify-between items-start mb-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="activity" class="text-purple-500"></i>
+                    <span class="text-sm font-medium text-gray-600">pH Suelo</span>
+                </div>
+            </div>
+            <div class="text-3xl font-bold text-purple-500">
+                <span id="ph">--</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficas -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <!-- Temperatura y Humedad -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="font-semibold mb-4 text-gray-800 text-lg">Temperatura y Humedad Suelo</h3>
+            <canvas id="chartTempHum" height="250"></canvas>
+        </div>
+
+        <!-- Luz Solar -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="font-semibold mb-4 text-gray-800 text-lg">Luz Solar</h3>
+            <canvas id="chartLuz" height="250"></canvas>
+        </div>
+
+        <!-- pH -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="font-semibold mb-4 text-gray-800 text-lg">pH del Suelo</h3>
+            <canvas id="chartPh" height="250"></canvas>
+        </div>
+
+        <!-- Humedad Aire -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="font-semibold mb-4 text-gray-800 text-lg">Humedad del Aire</h3>
+            <canvas id="chartHumAire" height="250"></canvas>
+        </div>
+    </div>
+
+    <!-- Controles de Actuadores -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white rounded-lg shadow-lg p-5">
+            <h3 class="font-semibold mb-3 flex items-center gap-2">
+                <i data-lucide="droplets" class="text-blue-500"></i>
+                Sistema de Riego
+            </h3>
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-sm text-gray-600">Estado:</span>
+                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                    AUTOMÁTICO
+                </span>
+            </div>
+            <button class="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium">
+                Activar Riego Manual
+            </button>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-5">
+            <h3 class="font-semibold mb-3 flex items-center gap-2">
+                <i data-lucide="wind" class="text-cyan-500"></i>
+                Ventilación
+            </h3>
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-sm text-gray-600">Estado:</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">
+                    APAGADO
+                </span>
+            </div>
+            <button class="w-full px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition font-medium">
+                Activar Ventilación
+            </button>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-5">
+            <h3 class="font-semibold mb-3 flex items-center gap-2">
+                <i data-lucide="activity" class="text-purple-500"></i>
+                Diagnóstico
+            </h3>
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-sm text-gray-600">Última revisión:</span>
+                <span class="text-xs text-gray-500" id="lastUpdate">--</span>
+            </div>
+            <button class="w-full px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition font-medium">
+                Ejecutar Diagnóstico
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-white rounded-lg shadow-lg p-4 text-center">
+        <p class="text-sm text-gray-600">
+            <strong>Laboratorio 9 - CC3086</strong> | Dashboard desarrollado por <strong>Diego</strong> | 
+            Backend: Flask + SQLite | Frontend: HTML + Chart.js + Tailwind CSS
+        </p>
+        <p class="text-xs text-gray-500 mt-2">
+            Conectado a: <code class="bg-gray-100 px-2 py-1 rounded">http://localhost:5000/api</code>
+        </p>
+    </div>
+
+    <script>
+        // ========== CONFIGURACIÓN ==========
+        const API_URL = 'http://localhost:5000/api';
+        const UPDATE_INTERVAL = 5000; // 5 segundos
+        
+        // ========== VARIABLES GLOBALES ==========
+        let charts = {};
+        let sensorData = [];
+        
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            initCharts();
+            fetchData();
+            setInterval(fetchData, UPDATE_INTERVAL);
+        });
+        
+        // ========== CREAR GRÁFICAS ==========
+        function initCharts() {
+            // Gráfica Temperatura + Humedad
+            charts.tempHum = new Chart(document.getElementById('chartTempHum'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Temperatura (°C)',
+                        data: [],
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        yAxisID: 'y',
+                        tension: 0.4
+                    }, {
+                        label: 'Humedad Suelo (%)',
+                        data: [],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        yAxisID: 'y1',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { position: 'left', title: { display: true, text: 'Temp (°C)' }},
+                        y1: { position: 'right', title: { display: true, text: 'Hum (%)' }, grid: { drawOnChartArea: false }}
+                    }
+                }
+            });
+            
+            // Gráfica Luz
+            charts.luz = new Chart(document.getElementById('chartLuz'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Luz (lux)',
+                        data: [],
+                        borderColor: '#eab308',
+                        backgroundColor: 'rgba(234, 179, 8, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            
+            // Gráfica pH
+            charts.ph = new Chart(document.getElementById('chartPh'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'pH',
+                        data: [],
+                        borderColor: '#a855f7',
+                        backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { min: 5, max: 8 }
+                    }
+                }
+            });
+            
+            // Gráfica Humedad Aire
+            charts.humAire = new Chart(document.getElementById('chartHumAire'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Humedad Aire (%)',
+                        data: [],
+                        borderColor: '#06b6d4',
+                        backgroundColor: 'rgba(6, 182, 212, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+        
+        // ========== OBTENER DATOS ==========
+        async function fetchData() {
+            try {
+                // Obtener datos de sensores
+                const response = await fetch(`${API_URL}/sensors/latest`);
+                const data = await response.json();
+                
+                if (data.error) {
+                    console.error('Error desde API:', data.error);
+                    return;
+                }
+                
+                sensorData = data;
+                
+                // Actualizar métricas actuales
+                const latest = data[data.length - 1];
+                updateCurrentMetrics(latest);
+                
+                // Actualizar gráficas
+                updateCharts(data);
+                
+                // Obtener y mostrar alertas
+                await fetchAlerts();
+                
+                // Actualizar timestamp
+                document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+                
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+                showError('No se pudo conectar con el servidor. ¿Está corriendo api.py?');
+            }
+        }
+        
+        // ========== ACTUALIZAR MÉTRICAS ==========
+        function updateCurrentMetrics(data) {
+            document.getElementById('humedadSuelo').textContent = data.humedad_suelo.toFixed(1);
+            document.getElementById('temperatura').textContent = data.temperatura.toFixed(1);
+            document.getElementById('luz').textContent = Math.round(data.luz);
+            document.getElementById('humedadAire').textContent = data.humedad_aire.toFixed(1);
+            document.getElementById('ph').textContent = data.ph.toFixed(2);
+        }
+        
+        // ========== ACTUALIZAR GRÁFICAS ==========
+        function updateCharts(data) {
+            // Tomar últimos 50 datos para no saturar
+            const displayData = data.slice(-50);
+            
+            const labels = displayData.map(d => {
+                const time = new Date(d.timestamp);
+                return time.toLocaleTimeString();
+            });
+            
+            // Temperatura + Humedad
+            charts.tempHum.data.labels = labels;
+            charts.tempHum.data.datasets[0].data = displayData.map(d => d.temperatura);
+            charts.tempHum.data.datasets[1].data = displayData.map(d => d.humedad_suelo);
+            charts.tempHum.update('none');
+            
+            // Luz
+            charts.luz.data.labels = labels;
+            charts.luz.data.datasets[0].data = displayData.map(d => d.luz);
+            charts.luz.update('none');
+            
+            // pH
+            charts.ph.data.labels = labels;
+            charts.ph.data.datasets[0].data = displayData.map(d => d.ph);
+            charts.ph.update('none');
+            
+            // Humedad Aire
+            charts.humAire.data.labels = labels;
+            charts.humAire.data.datasets[0].data = displayData.map(d => d.humedad_aire);
+            charts.humAire.update('none');
+        }
+        
+        // ========== OBTENER ALERTAS ==========
+        async function fetchAlerts() {
+            try {
+                const response = await fetch(`${API_URL}/alerts`);
+                const alerts = await response.json();
+                
+                const container = document.getElementById('alertsContainer');
+                const alertsList = document.getElementById('alertsList');
+                const alertsTitle = document.getElementById('alertsTitle');
+                const systemStatus = document.getElementById('systemStatus');
+                
+                if (alerts.length === 0) {
+                    container.classList.add('hidden');
+                    systemStatus.className = 'px-6 py-3 rounded-lg border-2 font-semibold text-lg bg-green-100 text-green-800 border-green-300';
+                    systemStatus.textContent = 'Estado: ÓPTIMO';
+                    return;
+                }
+                
+                // Mostrar alertas
+                container.classList.remove('hidden');
+                alertsTitle.textContent = `Alertas Activas (${alerts.length})`;
+                
+                alertsList.innerHTML = alerts.map(alert => {
+                    const color = alert.level === 'CRÍTICO' ? 'red' : 'yellow';
+                    return `
+                        <div class="flex items-center gap-2 text-sm p-2 bg-${color}-50 rounded">
+                            <i data-lucide="alert-triangle" class="text-${color}-500 w-4 h-4"></i>
+                            <span>${alert.message}</span>
+                        </div>
+                    `;
+                }).join('');
+                
+                lucide.createIcons();
+                
+                // Actualizar estado del sistema
+                const hasCritical = alerts.some(a => a.level === 'CRÍTICO');
+                if (hasCritical) {
+                    systemStatus.className = 'px-6 py-3 rounded-lg border-2 font-semibold text-lg bg-red-100 text-red-800 border-red-300 alert-pulse';
+                    systemStatus.textContent = 'Estado: CRÍTICO';
+                } else {
+                    systemStatus.className = 'px-6 py-3 rounded-lg border-2 font-semibold text-lg bg-yellow-100 text-yellow-800 border-yellow-300';
+                    systemStatus.textContent = 'Estado: ADVERTENCIA';
+                }
+                
+            } catch (error) {
+                console.error('Error al obtener alertas:', error);
+            }
+        }
+        
+        // ========== MOSTRAR ERROR ==========
+        function showError(message) {
+            const container = document.getElementById('alertsContainer');
+            const alertsList = document.getElementById('alertsList');
+            
+            container.classList.remove('hidden');
+            alertsList.innerHTML = `
+                <div class="flex items-center gap-2 text-sm text-red-600">
+                    <i data-lucide="x-circle" class="w-4 h-4"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
