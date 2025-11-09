@@ -1,0 +1,228 @@
+=== Chat-Box IA Smart Agriculture con CUDA ===
+
+Inicializando banco de intenciones...
+Generando datos sinteticos de sensores...
+
+=== Procesando 8 consultas ===
+
+─────────────────────────────────────────────────
+Consulta #1: "cual es la humedad del suelo en el invernadero"
+
+ Intención detectada: CONSULTAR_HUMEDAD
+ Scores de intenciones:
+   CONSULTAR_HUMEDAD: 0.577
+   CONSULTAR_TEMP: 0.318
+   CONSULTAR_ESTADO: 0.213
+
+ Métricas de sensores (ventana de 2048 muestras):
+   Humedad suelo: 29.81% (±2.88) [min: 25.00, max: 34.94]
+   Temperatura: 17.98°C (±1.44) [min: 15.50, max: 20.47]
+   Luz: 251.26lux (±28.96) [min: 200.10, max: 302.17]
+   Humedad aire: 82.49% (±3.28) [min: 74.85, max: 90.07]
+   pH: 6.47 (±0.29) [min: 6.00, max: 6.95]
+  Anomalías detectadas: 999595 (48808.35%)
+
+ Respuesta del sistema:
+   Humedad suelo: 29.8%, Hum.aire: 82.4%
+
+  Tiempos de ejecución:
+   - NLU: 0.658 ms
+   - Sensores: 2.832 ms
+   - Total (end-to-end): 3.023 ms
+
+─────────────────────────────────────────────────
+Consulta #2: "activa el riego porque esta muy seco"
+
+ Intención detectada: CONSULTAR_TEMP
+ Scores de intenciones:
+   ACTIVAR_RIEGO: 0.431
+   DESACTIVAR_RIEGO: 0.343
+   PROGRAMAR_RIEGO: 0.305
+   CONSULTAR_ESTADO: 0.180
+   ACTIVAR_VENTILACION: 0.127
+
+ Métricas de sensores (ventana de 2048 muestras):
+   Humedad suelo: 29.81% (±2.88) [min: 25.00, max: 34.94]
+   Temperatura: 17.98°C (±1.44) [min: 15.50, max: 20.47]
+   Luz: 251.26lux (±28.96) [min: 200.10, max: 302.17]
+   Humedad aire: 82.49% (±3.28) [min: 74.85, max: 90.07]
+   pH: 6.47 (±0.29) [min: 6.00, max: 6.95]
+  Anomalías detectadas: 999595 (48808.35%)
+
+ Respuesta del sistema:
+   Temperatura: 17.9C (rango optimo: 20-28C)
+
+  Tiempos de ejecución:
+   - NLU: 0.354 ms
+   - Sensores: 2.447 ms
+   - Total (end-to-end): 2.517 ms
+
+─────────────────────────────────────────────────
+Consulta #3: "cual es la temperatura actual"
+
+ Intención detectada: CONSULTAR_TEMP
+ Scores de intenciones:
+   CONSULTAR_HUMEDAD: 0.216
+   CONSULTAR_TEMP: 0.745
+
+ Métricas de sensores (ventana de 2048 muestras):
+   Humedad suelo: 29.81% (±2.88) [min: 25.00, max: 34.94]
+   Temperatura: 17.98°C (±1.44) [min: 15.50, max: 20.47]
+   Luz: 251.26lux (±28.96) [min: 200.10, max: 302.17]
+   Humedad aire: 82.49% (±3.28) [min: 74.85, max: 90.07]
+   pH: 6.47 (±0.29) [min: 6.00, max: 6.95]
+  Anomalías detectadas: 999595 (48808.35%)
+
+ Respuesta del sistema:
+   Temperatura: 17.9C (rango optimo: 20-28C)
+
+  Tiempos de ejecución:
+   - NLU: 0.343 ms
+   - Sensores: 2.336 ms
+   - Total (end-to-end): 2.412 ms
+
+─────────────────────────────────────────────────
+Consulta #4: "dame el estado general del sistema"
+
+ Intención detectada: CONSULTAR_TEMP
+ Scores de intenciones:
+   CONSULTAR_HUMEDAD: 0.147
+   CONSULTAR_TEMP: 0.231
+   CONSULTAR_ESTADO: 0.386
+   DIAGNOSTICO: 0.179
+
+ Métricas de sensores (ventana de 2048 muestras):
+   Humedad suelo: 29.81% (±2.88) [min: 25.00, max: 34.94]
+   Temperatura: 17.98°C (±1.44) [min: 15.50, max: 20.47]
+   Luz: 251.26lux (±28.96) [min: 200.10, max: 302.17]
+   Humedad aire: 82.49% (±3.28) [min: 74.85, max: 90.07]
+   pH: 6.47 (±0.29) [min: 6.00, max: 6.95]
+  Anomalías detectadas: 999595 (48808.35%)
+
+ Respuesta del sistema:
+   Temperatura: 17.9C (rango optimo: 20-28C)
+
+  Tiempos de ejecución:
+   - NLU: 0.364 ms
+   - Sensores: 2.371 ms
+   - Total (end-to-end): 2.428 ms
+
+─────────────────────────────────────────────────
+Consulta #5: "diagnostica si hay algun problema"
+
+ Intención detectada: PROGRAMAR_RIEGO
+ Scores de intenciones:
+   DIAGNOSTICO: 0.413
+
+ Métricas de sensores (ventana de 2048 muestras):
+   Humedad suelo: 29.81% (±2.88) [min: 25.00, max: 34.94]
+   Temperatura: 17.98°C (±1.44) [min: 15.50, max: 20.47]
+   Luz: 251.26lux (±28.96) [min: 200.10, max: 302.17]
+   Humedad aire: 82.49% (±3.28) [min: 74.85, max: 90.07]
+   pH: 6.47 (±0.29) [min: 6.00, max: 6.95]
+  Anomalías detectadas: 999595 (48808.35%)
+
+ Respuesta del sistema:
+   Programacion de riego configurada
+
+  Tiempos de ejecución:
+   - NLU: 0.369 ms
+   - Sensores: 2.375 ms
+   - Total (end-to-end): 2.486 ms
+
+─────────────────────────────────────────────────
+Consulta #6: "enciende los ventiladores hace mucho calor"
+
+ Intención detectada: CONSULTAR_TEMP
+ Scores de intenciones:
+   ACTIVAR_RIEGO: 0.111
+   ACTIVAR_VENTILACION: 0.396
+   DESACTIVAR_VENTILACION: 0.416
+   AYUDA: 0.110
+
+ Métricas de sensores (ventana de 2048 muestras):
+   Humedad suelo: 29.81% (±2.88) [min: 25.00, max: 34.94]
+   Temperatura: 17.98°C (±1.44) [min: 15.50, max: 20.47]
+   Luz: 251.26lux (±28.96) [min: 200.10, max: 302.17]
+   Humedad aire: 82.49% (±3.28) [min: 74.85, max: 90.07]
+   pH: 6.47 (±0.29) [min: 6.00, max: 6.95]
+  Anomalías detectadas: 999595 (48808.35%)
+
+ Respuesta del sistema:
+   Temperatura: 17.9C (rango optimo: 20-28C)
+
+  Tiempos de ejecución:
+   - NLU: 0.359 ms
+   - Sensores: 2.369 ms
+   - Total (end-to-end): 2.424 ms
+
+─────────────────────────────────────────────────
+Consulta #7: "apaga el riego ya esta bien"
+
+ Intención detectada: CONSULTAR_TEMP
+ Scores de intenciones:
+   ACTIVAR_RIEGO: 0.344
+   DESACTIVAR_RIEGO: 0.312
+   PROGRAMAR_RIEGO: 0.326
+   CONSULTAR_ESTADO: 0.164
+
+ Métricas de sensores (ventana de 2048 muestras):
+   Humedad suelo: 29.81% (±2.88) [min: 25.00, max: 34.94]
+   Temperatura: 17.98°C (±1.44) [min: 15.50, max: 20.47]
+   Luz: 251.26lux (±28.96) [min: 200.10, max: 302.17]
+   Humedad aire: 82.49% (±3.28) [min: 74.85, max: 90.07]
+   pH: 6.47 (±0.29) [min: 6.00, max: 6.95]
+  Anomalías detectadas: 999595 (48808.35%)
+
+ Respuesta del sistema:
+   Temperatura: 17.9C (rango optimo: 20-28C)
+
+  Tiempos de ejecución:
+   - NLU: 0.371 ms
+   - Sensores: 2.470 ms
+   - Total (end-to-end): 2.550 ms
+
+─────────────────────────────────────────────────
+Consulta #8: "ayuda"
+
+ Intención detectada: AYUDA
+ Scores de intenciones:
+   AYUDA: 0.442
+
+ Métricas de sensores (ventana de 2048 muestras):
+   Humedad suelo: 29.81% (±2.88) [min: 25.00, max: 34.94]
+   Temperatura: 17.98°C (±1.44) [min: 15.50, max: 20.47]
+   Luz: 251.26lux (±28.96) [min: 200.10, max: 302.17]
+   Humedad aire: 82.49% (±3.28) [min: 74.85, max: 90.07]
+   pH: 6.47 (±0.29) [min: 6.00, max: 6.95]
+  Anomalías detectadas: 999595 (48808.35%)
+
+ Respuesta del sistema:
+   Comandos: humedad, temp, riego, estado, diagnostico
+
+  Tiempos de ejecución:
+   - NLU: 0.336 ms
+   - Sensores: 2.362 ms
+   - Total (end-to-end): 2.432 ms
+
+═════════════════════════════════════════════════
+ Procesamiento completado
+ Latencia promedio: 2.534 ms
+ QPS teórico: 394.7 queries/segundo
+═════════════════════════════════════════════════
+
+=== Benchmark de Escalabilidad ===
+
+Streams: 1 | Queries: 10 | Tiempo: 1.93 ms | QPS: 5174.7
+Streams: 2 | Queries: 20 | Tiempo: 3.69 ms | QPS: 5414.6
+Streams: 4 | Queries: 40 | Tiempo: 7.24 ms | QPS: 5526.6
+Streams: 8 | Queries: 80 | Tiempo: 15.08 ms | QPS: 5304.4
+
+=== Recomendaciones de Integración ===
+1. Conectar con dashboard web (Node.js/Flask/FastAPI)
+2. Integrar con MQTT broker para comandos remotos
+3. Almacenar logs en CSV/JSON o BD (SQLite/PostgreSQL)
+4. Conectar GPIO para actuadores físicos (Raspberry Pi)
+5. Agregar WebSocket para respuestas en tiempo real
+
+ Programa finalizado exitosamente
