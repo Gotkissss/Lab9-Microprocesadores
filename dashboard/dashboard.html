@@ -48,7 +48,7 @@
                     🌱 Smart Agriculture Dashboard
                 </h1>
                 <p class="text-gray-600 mt-2">Monitoreo en Tiempo Real - Lab 9 CC3086</p>
-                <p class="text-sm text-gray-500 mt-1">Desarrollado por: <strong>Diego</strong> (Persona 2)</p>
+                <p class="text-sm text-gray-500 mt-1">Desarrollado por: <strong>Grupo 3</strong></p>
             </div>
             <div id="systemStatus" class="px-6 py-3 rounded-lg border-2 font-semibold text-lg bg-green-100 text-green-800 border-green-300">
                 Estado: ÓPTIMO
@@ -142,81 +142,74 @@
         <!-- Temperatura y Humedad -->
         <div class="bg-white rounded-lg shadow-lg p-6">
             <h3 class="font-semibold mb-4 text-gray-800 text-lg">Temperatura y Humedad Suelo</h3>
-            <canvas id="chartTempHum" height="250"></canvas>
+            <div style="height: 300px; position: relative;">
+                <canvas id="chartTempHum"></canvas>
+            </div>
         </div>
 
         <!-- Luz Solar -->
         <div class="bg-white rounded-lg shadow-lg p-6">
             <h3 class="font-semibold mb-4 text-gray-800 text-lg">Luz Solar</h3>
-            <canvas id="chartLuz" height="250"></canvas>
+            <div style="height: 300px; position: relative;">
+                <canvas id="chartLuz"></canvas>
+            </div>
         </div>
 
         <!-- pH -->
         <div class="bg-white rounded-lg shadow-lg p-6">
             <h3 class="font-semibold mb-4 text-gray-800 text-lg">pH del Suelo</h3>
-            <canvas id="chartPh" height="250"></canvas>
+            <div style="height: 300px; position: relative;">
+                <canvas id="chartPh"></canvas>
+            </div>
         </div>
 
         <!-- Humedad Aire -->
         <div class="bg-white rounded-lg shadow-lg p-6">
             <h3 class="font-semibold mb-4 text-gray-800 text-lg">Humedad del Aire</h3>
-            <canvas id="chartHumAire" height="250"></canvas>
+            <div style="height: 300px; position: relative;">
+                <canvas id="chartHumAire"></canvas>
+            </div>
         </div>
     </div>
 
-    <!-- Controles de Actuadores -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div class="bg-white rounded-lg shadow-lg p-5">
-            <h3 class="font-semibold mb-3 flex items-center gap-2">
-                <i data-lucide="droplets" class="text-blue-500"></i>
-                Sistema de Riego
-            </h3>
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-sm text-gray-600">Estado:</span>
-                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                    AUTOMÁTICO
-                </span>
+    <!-- Información del Sistema -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <h3 class="font-semibold mb-4 text-gray-800 text-lg flex items-center gap-2">
+            <i data-lucide="info" class="text-blue-500"></i>
+            Información del Sistema
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center gap-2 mb-2">
+                    <i data-lucide="database" class="text-green-500 w-5 h-5"></i>
+                    <span class="font-semibold text-gray-700">Base de Datos</span>
+                </div>
+                <p class="text-sm text-gray-600">SQLite - 1000 registros sintéticos</p>
             </div>
-            <button class="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium">
-                Activar Riego Manual
-            </button>
-        </div>
-
-        <div class="bg-white rounded-lg shadow-lg p-5">
-            <h3 class="font-semibold mb-3 flex items-center gap-2">
-                <i data-lucide="wind" class="text-cyan-500"></i>
-                Ventilación
-            </h3>
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-sm text-gray-600">Estado:</span>
-                <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">
-                    APAGADO
-                </span>
+            <div class="p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center gap-2 mb-2">
+                    <i data-lucide="activity" class="text-blue-500 w-5 h-5"></i>
+                    <span class="font-semibold text-gray-700">Actualización</span>
+                </div>
+                <p class="text-sm text-gray-600">Cada 5 segundos</p>
+                <p class="text-xs text-gray-500 mt-1">Última: <span id="lastUpdate">--</span></p>
             </div>
-            <button class="w-full px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition font-medium">
-                Activar Ventilación
-            </button>
-        </div>
-
-        <div class="bg-white rounded-lg shadow-lg p-5">
-            <h3 class="font-semibold mb-3 flex items-center gap-2">
-                <i data-lucide="activity" class="text-purple-500"></i>
-                Diagnóstico
-            </h3>
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-sm text-gray-600">Última revisión:</span>
-                <span class="text-xs text-gray-500" id="lastUpdate">--</span>
+            <div class="p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center gap-2 mb-2">
+                    <i data-lucide="layers" class="text-purple-500 w-5 h-5"></i>
+                    <span class="font-semibold text-gray-700">Sensores Activos</span>
+                </div>
+                <p class="text-sm text-gray-600">5 canales monitoreados</p>
             </div>
-            <button class="w-full px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition font-medium">
-                Ejecutar Diagnóstico
-            </button>
         </div>
     </div>
 
     <!-- Footer -->
     <div class="bg-white rounded-lg shadow-lg p-4 text-center">
         <p class="text-sm text-gray-600">
-            <strong>Laboratorio 9 - CC3086</strong> | Dashboard desarrollado por <strong>Diego</strong> | 
+            <strong>Laboratorio 9 - CC3086</strong> | Dashboard desarrollado por <strong>Grupo 3</strong>
+        </p>
+        <p class="text-sm text-gray-600 mt-1">
             Backend: Flask + SQLite | Frontend: HTML + Chart.js + Tailwind CSS
         </p>
         <p class="text-xs text-gray-500 mt-2">
